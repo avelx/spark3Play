@@ -1,2 +1,2 @@
 # spark3Play
-Playing with spark
+Playing with Spark3: new feature, compression etc

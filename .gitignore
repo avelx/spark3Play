@@ -1,2 +1,8 @@
 *.class
 *.log
+/project/target/config-classes/*.cache
+/project/target/*
+/project/*
+/target/*
+.idea/*
+/scripts/target/*
