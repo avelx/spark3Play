@@ -1,18 +1,18 @@
-import model.SimpleTrade
+import model.{ErrorHandling, Price, Trade}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+
+import scala.util.Random
 
 object Runner extends App {
 
   import org.apache.log4j.Logger
   import org.apache.log4j.Level
-
-  Logger.getLogger("org").setLevel(Level.OFF)
-  Logger.getLogger("akka").setLevel(Level.OFF)
+  Logger.getLogger("org").setLevel(Level.DEBUG)
+  Logger.getLogger("akka").setLevel(Level.DEBUG)
 
   val conf = new SparkConf()
-    .setMaster("spark://zeta.avel.local:7077")
-    .set("spark.executor.memory", "4G")
+    .setMaster("local[*]")
     .setAppName("DataSetResearchApp")
 
   val spark = SparkSession
@@ -24,9 +24,41 @@ object Runner extends App {
 
   val trades = spark
     .read
-    .json("hdfs://192.168.0.8:9000/data/comrade.csv")
+    .option("header", "true")
+    .csv("hdfs://zeta.avel.local:9000/data/bitstampUSD.csv")
+    .as[Trade]
+    .cache()
 
-  trades.show(10)
+  import data.Validator._
+
+  val prices = trades
+    .map(t =>
+      Price(t.Timestamp, t.Open, t.High, t.Low, t.Close)
+    )
+
+  val ds = prices
+    .map(rec => rec.copy(Error_Code = getErrorCodeA(rec)))
+
+  val guid = Random.alphanumeric.take(10).toList.mkString("")
+  ds.
+    write
+    .json(s"hdfs://zeta.avel.local:9000/data/usd-temp/$guid-USD.csv")
+
+  println( ds.rdd.toDebugString)
+
+  val filtered = ds
+    .filter(_.Error_Code.isDefined)
+    .map(p => ErrorHandling(p.Timestamp, p.Error_Code.get))
+
+  println( filtered.rdd.toDebugString)
+
+  filtered
+    .write
+    .json(s"hdfs://zeta.avel.local:9000/data/$guid-error-USD.csv")
+
+  readLine()
+
 
   spark.close()
+
 }
