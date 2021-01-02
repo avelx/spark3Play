@@ -61,7 +61,7 @@ object Runner extends App {
 
   val dfprev = pricesNoErrors
     .write.format("org.apache.spark.sql.cassandra")
-    .options(Map("keyspace"->"spark_demo","table"->"price"))
+    .options(Map("keyspace"->"spark_demo","table"->"prices"))
     .mode(SaveMode.Append)
     .save()
 
