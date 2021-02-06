@@ -1,6 +1,8 @@
 #scp -i ~/.ssh/garage/hadoop.avel.local ~/Downloads/binance_crypto-klines.zip hadoop@delta.avel.local:/home/hadoop/datasets
 # Download and unpack hadoop on the set of hosts
-declare -a hosts=("192.168.0.38" "192.168.0.68" "192.168.0.78")
+#declare -a hosts=("192.168.0.38" "192.168.0.68" "192.168.0.78")
+declare -a hosts=("192.168.0.88")
+
 
 # Look along hosts
 SPARK_RELEASE_URL="https://apache.mirrors.nublue.co.uk/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz"

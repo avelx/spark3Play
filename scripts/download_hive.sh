@@ -16,3 +16,22 @@ do
   echo "$unpack_result"
 
 done
+
+/*
+  https://issues.apache.org/jira/browse/HIVE-22915
+  - Next command to fix issue with HIV kick start
+
+  rm $HIVE_HOME/lib/guava-19.0.jar
+  cp $HADOOP_HOME/share/hadoop/hdfs/lib/guava-27.0-jre.jar $HIVE_HOME/lib
+
+  Start HIV:
+  $HIVE_HOME/bin/hive
+
+
+ls -d $HIVE_HOME/meta*
+/opt/hive-3.1.0-bin/metastore_db
+
+ rm -rf $HIVE_HOME/metastore_db
+$ cd $HIVE_HOME
+$ schematool -initSchema -dbType derby
+*/

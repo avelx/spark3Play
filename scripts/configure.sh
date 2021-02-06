@@ -34,3 +34,20 @@ firewall-cmd --zone=public --permanent --add-port=7077/tcp
 firewall-cmd --zone=public --permanent --add-port=8081/tcp
 
 firewall-cmd --zone=public --permanent --add-port=33682/tcp
+
+firewall-cmd --zone=public --permanent --add-port=5005/tcp
+firewall-cmd --zone=public --permanent --add-port=50111/tcp
+
+-- Hive
+firewall-cmd --zone=public --permanent --add-port=10000/tcp
+
+-- Hive Web UI
+firewall-cmd --zone=public --permanent --add-port=9999/tcp
+firewall-cmd --zone=public --permanent --add-port=18080/tcp
+
+-- Prometheus: alpha
+firewall-cmd --zone=public --permanent --add-port=9090/tcp
+
+firewall-cmd --zone=public --permanent --add-port=3000/tcp
+
+firewall-cmd --reload
